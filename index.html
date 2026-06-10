@@ -2,65 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>薛氏翻花笺</title>
-    <link href="style.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="jquery-3.6.1.min.js"></script>
-    <script type="text/javascript" src="display_helper.js"></script>
-    <script type="text/javascript" src="cards_helper.js"></script>
-    <script type="text/javascript" src="general_mode.js"></script>
-    <script type="text/javascript" src="main.js"></script>
+    <title>Tong Shen</title>
+    <style>
+        :root { color-scheme: light dark; }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: #0f1115;
+            color: #e8eaed;
+            line-height: 1.6;
+        }
+        main {
+            max-width: 640px;
+            padding: 2.5rem 1.5rem;
+        }
+        h1 { font-size: 2.5rem; margin: 0 0 .25rem; }
+        .tagline { color: #9aa0a6; margin: 0 0 2rem; }
+        .bio { margin: 0 0 2rem; }
+        h2 {
+            font-size: .8rem;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: #9aa0a6;
+            margin: 0 0 .75rem;
+        }
+        ul { list-style: none; padding: 0; margin: 0; }
+        li { margin: 0 0 .6rem; }
+        a { color: #8ab4f8; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .project a { font-weight: 600; }
+        .project span { color: #9aa0a6; font-weight: 400; }
+        footer { margin-top: 2.5rem; color: #5f6368; font-size: .85rem; }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>《墨魂》薛氏翻花笺</h1>
-    </header>
-    <div>
-        <a href="javascript:newGame();" id="newGameButton">翻花开始</a>
-    </div>
+    <main>
+        <h1>Tong Shen</h1>
+        <p class="tagline">Software engineer · games &amp; web</p>
 
-    <div id="stepScore">
-        连续消除加分：+<span id="step">1000</span>
-    </div>
+        <p class="bio">
+            Placeholder profile — replace this text with your bio.
+        </p>
 
-    <div id="gameBoard">
-        <div id="scoreDiv">
-            本局得筹：<span id="score">0</span>
-        </div>
-        <div id="info">
-            <div id="infoTitle" class="infoTitle">游戏说明</div>
-            <div class="infoContent">一、点击任意2张同句或上下句花笺，可消除花笺并得筹。</div>
-            <div class="infoContent">二、除104张普通花笺外，每局还有4张追鹅笺（王羲之写的呢），可与任意其他花笺进行消除。</div>
-            <div class="infoContent">三、点击带有数字的笺纸背面，可翻开2张花笺覆盖当前手牌，直至数字归0。</div>
-            <div class="infoContent">四、满足如下条件之一则单局游玩结束：初始明笺全部消除；笺纸背面归0且没有可对应消除的花笺。</div>
-            <div class="infoContent">五、单次基础得筹10分，若连续消除成功，单次得筹每10分递增。</div>
-            <div class="infoContent">六、本网页的制作仅为个人娱乐行为，与官方无关。请多多支持《墨魂》正版游戏！</div>
-        </div>
-        <div id="win">
-            <div id="winTitle" class="infoTitle">翻花终了</div>
-            <div id="scoreContent">本局得筹：<span id="totalScore">0</span></div>
-        </div>
-        <div id="canvas">
-            <div id="cardsTable"></div>
-            <div id="cardsPool">
-                <div id="pileCards">
-                    <div class="pilesText" id="pilesText">
-                    </div>
-                </div>
-                <div id="handCards">
-                    <div id="hand1">
-                        <div class="text" id="text1">
-                        </div>
-                    </div>
-                    <div id="hand2">
-                        <div class="text" id="text2">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <h2>Projects</h2>
+        <ul>
+            <li class="project">
+                <a href="/fanhuajian/">薛氏翻花笺 (Fanhuajian)</a>
+                <span>— a 《墨魂》 card-matching web game</span>
+            </li>
+        </ul>
+
+        <h2>Links</h2>
+        <ul>
+            <li><a href="https://github.com/tong-meow">GitHub</a></li>
+        </ul>
+
+        <footer>© Tong Shen</footer>
+    </main>
 </body>
-<footer id="footer"><a href="https://weibo.com/u/6236258532" id="weiboLink">制作者：花间酒（uid: 19466054） 微博ID: FantasiaInDMinor</a></footer>
 </html>
