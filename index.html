@@ -1,69 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tong Shen</title>
-    <style>
-        :root { color-scheme: light dark; }
-        * { box-sizing: border-box; }
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background: #0f1115;
-            color: #e8eaed;
-            line-height: 1.6;
-        }
-        main {
-            max-width: 640px;
-            padding: 2.5rem 1.5rem;
-        }
-        h1 { font-size: 2.5rem; margin: 0 0 .25rem; }
-        .tagline { color: #9aa0a6; margin: 0 0 2rem; }
-        .bio { margin: 0 0 2rem; }
-        h2 {
-            font-size: .8rem;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            color: #9aa0a6;
-            margin: 0 0 .75rem;
-        }
-        ul { list-style: none; padding: 0; margin: 0; }
-        li { margin: 0 0 .6rem; }
-        a { color: #8ab4f8; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .project a { font-weight: 600; }
-        .project span { color: #9aa0a6; font-weight: 400; }
-        footer { margin-top: 2.5rem; color: #5f6368; font-size: .85rem; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIZ SHEN — Software Engineer</title>
+<meta name="description" content="Liz Shen — Software Engineer @ Weekend. San Francisco.">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- AOS scroll-reveal (free, MIT) -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#070713;
+  --bg2:#0d0822;
+  --pink:#ff2e97;
+  --cyan:#00f0ff;
+  --purple:#a64dff;
+  --yellow:#ffd319;
+  --text:#e9e6ff;
+  --muted:#8b86b8;
+  --grid:rgba(166,77,255,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Rajdhani","Space Grotesk",system-ui,sans-serif;
+  font-size:18px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+::selection{background:var(--pink);color:#fff}
+
+/* animated background canvas */
+#grid-canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-2;display:block}
+.bg-glow{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(255,46,151,.18), transparent 70%),
+    radial-gradient(50% 50% at 80% 90%, rgba(0,240,255,.12), transparent 70%),
+    radial-gradient(40% 40% at 10% 80%, rgba(166,77,255,.14), transparent 70%);
+}
+/* CRT scanlines + flicker */
+.scanlines{
+  position:fixed;inset:0;z-index:9998;pointer-events:none;
+  background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.10) 3px,rgba(0,0,0,0) 4px);
+  mix-blend-mode:multiply;opacity:.6;
+}
+.vignette{position:fixed;inset:0;z-index:9997;pointer-events:none;box-shadow:inset 0 0 220px rgba(0,0,0,.9)}
+
+/* neon cursor glow */
+.cursor-glow{position:fixed;width:380px;height:380px;border-radius:50%;pointer-events:none;z-index:-1;
+  background:radial-gradient(circle,rgba(255,46,151,.10),transparent 60%);
+  transform:translate(-50%,-50%);transition:opacity .3s;will-change:transform}
+
+/* layout */
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+section{position:relative;padding:120px 0}
+
+/* nav */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 28px;backdrop-filter:blur(8px);
+  background:linear-gradient(to bottom,rgba(7,7,19,.85),rgba(7,7,19,0));
+  border-bottom:1px solid rgba(166,77,255,.12)}
+.logo{font-family:"Press Start 2P";font-size:13px;color:var(--cyan);text-shadow:0 0 10px var(--cyan);letter-spacing:1px}
+.nav-links{display:flex;gap:26px}
+.nav-links a{font-family:"Rajdhani";font-weight:600;font-size:15px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);text-decoration:none;transition:.2s;position:relative}
+.nav-links a:hover{color:var(--text);text-shadow:0 0 8px var(--pink)}
+@media(max-width:680px){.nav-links{display:none}}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding-top:80px}
+.badge{font-family:"Press Start 2P";font-size:10px;color:var(--yellow);
+  border:1px solid rgba(255,211,25,.4);padding:9px 14px;border-radius:4px;letter-spacing:2px;
+  margin-bottom:34px;text-shadow:0 0 8px rgba(255,211,25,.6);animation:pulse 2.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.hero h1{font-family:"Press Start 2P";font-size:clamp(30px,8vw,76px);line-height:1.15;letter-spacing:2px;
+  color:#fff;position:relative;
+  text-shadow:3px 3px 0 var(--pink),-3px -3px 0 var(--cyan)}
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;left:0;top:0;width:100%;overflow:hidden}
+.glitch::before{color:var(--cyan);animation:glitch1 3s infinite linear alternate-reverse;clip-path:inset(0 0 60% 0)}
+.glitch::after{color:var(--pink);animation:glitch2 2.4s infinite linear alternate-reverse;clip-path:inset(55% 0 0 0)}
+@keyframes glitch1{0%{transform:translate(0)}20%{transform:translate(-3px,2px)}40%{transform:translate(2px,-1px)}60%,100%{transform:translate(0)}}
+@keyframes glitch2{0%{transform:translate(0)}25%{transform:translate(3px,-2px)}50%{transform:translate(-2px,1px)}75%,100%{transform:translate(0)}}
+.hero .role{margin-top:30px;font-size:24px;font-weight:600;letter-spacing:1px;color:var(--text)}
+.hero .role b{color:var(--pink);text-shadow:0 0 12px rgba(255,46,151,.6)}
+.hero .meta{margin-top:14px;font-size:17px;color:var(--muted);letter-spacing:3px;text-transform:uppercase}
+.hero .meta span{color:var(--cyan)}
+.start{margin-top:54px;font-family:"Press Start 2P";font-size:11px;color:var(--text);letter-spacing:2px;animation:blink 1.2s steps(2) infinite}
+.start .arrow{display:block;margin-top:18px;font-size:20px;color:var(--pink)}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.15}}
+
+/* section heading */
+.shead{font-family:"Press Start 2P";font-size:clamp(15px,3.2vw,24px);color:#fff;margin-bottom:50px;
+  display:flex;align-items:center;gap:16px;letter-spacing:1px}
+.shead .num{color:var(--pink);font-size:.7em;text-shadow:0 0 10px var(--pink)}
+.shead::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--purple),transparent)}
+
+/* cards */
+.panel{background:linear-gradient(160deg,rgba(20,12,44,.85),rgba(13,8,34,.7));
+  border:1px solid rgba(166,77,255,.28);border-radius:12px;padding:34px;
+  box-shadow:0 0 0 1px rgba(0,240,255,.05),0 20px 60px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.panel::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--pink),var(--cyan),var(--purple))}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:28px}
+@media(max-width:760px){.about-grid{grid-template-columns:1fr}}
+.about p{font-size:19px;color:#d6d2f5;margin-bottom:16px}
+.about .hl{color:var(--cyan);font-weight:600}
+.id-card{font-family:"Rajdhani"}
+.id-card .row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px dashed rgba(166,77,255,.25);font-size:16px}
+.id-card .row:last-child{border:0}
+.id-card .k{color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-size:13px;font-weight:600}
+.id-card .v{color:var(--text);font-weight:600;text-align:right}
+.avatar{font-family:"Press Start 2P";font-size:34px;text-align:center;padding:22px 0 8px;
+  color:var(--yellow);text-shadow:0 0 16px rgba(255,211,25,.5)}
+
+/* QUEST LOG / timeline */
+.timeline{position:relative;padding-left:34px}
+.timeline::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;
+  background:linear-gradient(var(--pink),var(--cyan))}
+.quest{position:relative;margin-bottom:30px}
+.quest::before{content:"";position:absolute;left:-34px;top:6px;width:18px;height:18px;border-radius:50%;
+  background:var(--bg);border:3px solid var(--pink);box-shadow:0 0 12px var(--pink)}
+.quest.cyan::before{border-color:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.quest .when{font-family:"Press Start 2P";font-size:9px;color:var(--yellow);letter-spacing:1px}
+.quest h3{font-size:23px;font-weight:700;margin:8px 0 2px;color:#fff}
+.quest .org{color:var(--cyan);font-weight:600;font-size:17px;letter-spacing:.5px}
+.quest p{color:var(--muted);font-size:16px;margin-top:8px}
+.tag{display:inline-block;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--purple);border:1px solid rgba(166,77,255,.4);border-radius:20px;padding:3px 11px;margin:8px 6px 0 0}
+
+/* SKILLS / stat bars */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:26px 46px}
+@media(max-width:680px){.stats{grid-template-columns:1fr}}
+.stat .top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.stat .name{font-weight:700;font-size:17px;letter-spacing:.5px}
+.stat .lvl{font-family:"Press Start 2P";font-size:9px;color:var(--cyan)}
+.bar{height:14px;background:rgba(255,255,255,.06);border:1px solid rgba(166,77,255,.3);border-radius:8px;overflow:hidden;position:relative}
+.bar .fill{height:100%;width:0;border-radius:8px;
+  background:linear-gradient(90deg,var(--pink),var(--purple),var(--cyan));
+  background-size:200% 100%;animation:shift 3s linear infinite;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+@keyframes shift{to{background-position:200% 0}}
+.skill-note{margin-top:34px;color:var(--muted);font-size:15px;font-style:italic}
+
+/* PROJECT (subtle easter egg) */
+.cabinet{display:flex;align-items:center;gap:26px;flex-wrap:wrap;
+  background:linear-gradient(160deg,rgba(20,12,44,.6),rgba(13,8,34,.5));
+  border:1px dashed rgba(0,240,255,.3);border-radius:12px;padding:24px 28px;max-width:640px}
+.cabinet .screen{width:84px;height:84px;border-radius:10px;flex-shrink:0;
+  background:radial-gradient(circle at 40% 30%,#3a1d6e,#0d0822);
+  display:flex;align-items:center;justify-content:center;font-size:38px;
+  border:2px solid rgba(0,240,255,.4);box-shadow:0 0 18px rgba(0,240,255,.25) inset;
+  animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.cabinet .info h3{font-size:20px;color:#fff;font-weight:700}
+.cabinet .info p{color:var(--muted);font-size:15px;margin:4px 0 12px}
+.btn{display:inline-block;font-family:"Rajdhani";font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  font-size:14px;text-decoration:none;color:var(--bg);background:var(--cyan);
+  padding:9px 18px;border-radius:6px;box-shadow:0 0 16px rgba(0,240,255,.4);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 26px rgba(0,240,255,.7)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--pink);box-shadow:0 0 14px rgba(255,46,151,.3)}
+.btn.ghost:hover{background:var(--pink);color:#fff}
+
+/* CONTACT */
+.contact{text-align:center}
+.contact h2{font-family:"Press Start 2P";font-size:clamp(16px,4vw,30px);color:#fff;margin-bottom:18px;
+  text-shadow:2px 2px 0 var(--pink),-2px -2px 0 var(--cyan)}
+.contact p{color:var(--muted);max-width:520px;margin:0 auto 34px}
+
+footer{text-align:center;padding:50px 0 70px;color:var(--muted);font-size:13px;letter-spacing:1px}
+footer .heart{color:var(--pink)}
+
+/* reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
 </head>
 <body>
-    <main>
-        <h1>Tong Shen</h1>
-        <p class="tagline">Software engineer · games &amp; web</p>
 
-        <p class="bio">
-            Placeholder profile — replace this text with your bio.
-        </p>
+<canvas id="grid-canvas"></canvas>
+<div class="bg-glow"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="scanlines"></div>
+<div class="vignette"></div>
 
-        <h2>Projects</h2>
-        <ul>
-            <li class="project">
-                <a href="/fanhuajian/">薛氏翻花笺 (Fanhuajian)</a>
-                <span>— a 《墨魂》 card-matching web game</span>
-            </li>
-        </ul>
+<nav>
+  <div class="logo">LIZ_SHEN</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#quests">Quests</a>
+    <a href="#stats">Stats</a>
+    <a href="#extras">Extras</a>
+    <a href="#contact">Connect</a>
+  </div>
+</nav>
 
-        <h2>Links</h2>
-        <ul>
-            <li><a href="https://github.com/tong-meow">GitHub</a></li>
-        </ul>
+<!-- HERO -->
+<header class="hero wrap" id="top">
+  <div class="badge">▸ PLAYER ONLINE</div>
+  <h1><span class="glitch" data-text="LIZ SHEN">LIZ SHEN</span></h1>
+  <div class="role">Software Engineer <b>@ Weekend</b></div>
+  <div class="meta">San Francisco <span>·</span> California</div>
+  <div class="start">PRESS ↓ TO START<span class="arrow">▼</span></div>
+</header>
 
-        <footer>© Tong Shen</footer>
-    </main>
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="shead"><span class="num">01</span> PLAYER PROFILE</div>
+    <div class="about-grid">
+      <div class="about panel" data-aos="fade-right">
+        <p>Hey — I'm <span class="hl">Liz Shen</span>, a software engineer building at
+        <span class="hl">Weekend</span>, a voice-first game company.</p>
+        <p>I came up through games: I started as a <span class="hl">Game Narrative Designer</span>
+        and <span class="hl">Game Developer</span> before going deep on engineering. That mix —
+        story plus systems — is still how I think about software.</p>
+        <p style="color:var(--muted)"><em>[ Placeholder: a couple lines on what I'm building at
+        Weekend right now go here. ]</em></p>
+      </div>
+      <div class="id-card panel" data-aos="fade-left">
+        <div class="avatar">⬢</div>
+        <div class="row"><span class="k">Class</span><span class="v">Software Engineer</span></div>
+        <div class="row"><span class="k">Guild</span><span class="v">Weekend 🎙️</span></div>
+        <div class="row"><span class="k">Region</span><span class="v">San Francisco, CA</span></div>
+        <div class="row"><span class="k">Origin</span><span class="v">Univ. of Utah</span></div>
+        <div class="row"><span class="k">Prev Class</span><span class="v">Narrative · Gamedev</span></div>
+        <div class="row"><span class="k">Status</span><span class="v" style="color:var(--cyan)">● Available</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUEST LOG -->
+<section id="quests">
+  <div class="wrap">
+    <div class="shead"><span class="num">02</span> QUEST LOG</div>
+    <div class="timeline">
+      <div class="quest" data-aos="fade-up">
+        <div class="when">NOW</div>
+        <h3>Software Engineer</h3>
+        <div class="org">Weekend — voice-first games</div>
+        <p>[ Placeholder: current role description — what you build, the stack, the impact. ]</p>
+        <span class="tag">Voice</span><span class="tag">Games</span><span class="tag">Full-stack</span>
+      </div>
+      <div class="quest cyan" data-aos="fade-up" data-aos-delay="100">
+        <div class="when">PREVIOUSLY</div>
+        <h3>Game Developer</h3>
+        <div class="org">[ Studio / project placeholder ]</div>
+        <p>[ Placeholder: shipped features, gameplay systems, tools. ]</p>
+        <span class="tag">Gameplay</span><span class="tag">Systems</span>
+      </div>
+      <div class="quest" data-aos="fade-up" data-aos-delay="200">
+        <div class="when">PREVIOUSLY</div>
+        <h3>Game Narrative Designer</h3>
+        <div class="org">[ Studio / project placeholder ]</div>
+        <p>[ Placeholder: writing, branching narrative, world &amp; character design. ]</p>
+        <span class="tag">Narrative</span><span class="tag">Worldbuilding</span>
+      </div>
+      <div class="quest cyan" data-aos="fade-up" data-aos-delay="300">
+        <div class="when">ORIGIN STORY</div>
+        <h3>University of Utah</h3>
+        <div class="org">Where it started</div>
+        <p>[ Placeholder: degree / focus. ]</p>
+        <span class="tag">Education</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="wrap">
+    <div class="shead"><span class="num">03</span> SKILL TREE</div>
+    <div class="stats panel" data-aos="fade-up" style="padding:40px">
+      <div class="stat"><div class="top"><span class="name">JavaScript / TypeScript</span><span class="lvl">LV 90</span></div><div class="bar"><div class="fill" data-w="90"></div></div></div>
+      <div class="stat"><div class="top"><span class="name">Python</span><span class="lvl">LV 80</span></div><div class="bar"><div class="fill" data-w="80"></div></div></div>
+      <div class="stat"><div class="top"><span class="name">Game Dev (Unity / engines)</span><span class="lvl">LV 85</span></div><div class="bar"><div class="fill" data-w="85"></div></div></div>
+      <div class="stat"><div class="top"><span class="name">Web / Frontend</span><span class="lvl">LV 82</span></div><div class="bar"><div class="fill" data-w="82"></div></div></div>
+      <div class="stat"><div class="top"><span class="name">Narrative Design</span><span class="lvl">LV 88</span></div><div class="bar"><div class="fill" data-w="88"></div></div></div>
+      <div class="stat"><div class="top"><span class="name">Voice / Conversational UX</span><span class="lvl">LV 75</span></div><div class="bar"><div class="fill" data-w="75"></div></div></div>
+    </div>
+    <p class="skill-note">▸ Levels are placeholders — swap in your real stack &amp; proficiencies anytime.</p>
+  </div>
+</section>
+
+<!-- EXTRAS / easter egg -->
+<section id="extras">
+  <div class="wrap">
+    <div class="shead"><span class="num">04</span> EXTRAS</div>
+    <div class="cabinet" data-aos="zoom-in">
+      <div class="screen">🎴</div>
+      <div class="info">
+        <h3>薛氏翻花笺 · Fanhuajian</h3>
+        <p>A tiny card-matching web game I built for fun. Go waste five minutes.</p>
+        <a class="btn" href="/fanhuajian/">▶ Play</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2>LET'S CONNECT</h2>
+    <p>Building something voice-first, story-driven, or just want to talk games &amp; engineering? Say hi.</p>
+    <a class="btn ghost" href="https://www.linkedin.com/in/tongshen930/" target="_blank" rel="noopener">in · LinkedIn</a>
+  </div>
+</section>
+
+<footer>
+  © <span id="yr"></span> Liz Shen · built with <span class="heart">♥</span> &amp; too many neon gradients
+</footer>
+
+<!-- AOS -->
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+<script>
+// year
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+// AOS init
+AOS.init({duration:800,easing:'ease-out-cubic',once:true,offset:80});
+
+// cursor glow
+(function(){
+  var g=document.getElementById('cursorGlow');
+  window.addEventListener('mousemove',function(e){
+    g.style.left=e.clientX+'px';g.style.top=e.clientY+'px';
+  },{passive:true});
+})();
+
+// skill bars fill on scroll
+(function(){
+  var fills=document.querySelectorAll('.fill');
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if(en.isIntersecting){en.target.style.width=en.target.dataset.w+'%';io.unobserve(en.target);}
+    });
+  },{threshold:.4});
+  fills.forEach(function(f){io.observe(f);});
+})();
+
+// synthwave perspective grid
+(function(){
+  var c=document.getElementById('grid-canvas'),x=c.getContext('2d'),w,h,t=0;
+  function size(){w=c.width=innerWidth;h=c.height=innerHeight;}
+  size();addEventListener('resize',size);
+  function draw(){
+    x.clearRect(0,0,w,h);
+    var hz=h*0.55;               // horizon
+    // perspective floor grid
+    x.strokeStyle='rgba(166,77,255,.30)';x.lineWidth=1;
+    // horizontal lines moving toward viewer
+    var spacing=24;
+    for(var i=0;i<26;i++){
+      var p=((i*spacing + (t%spacing)))/(26*spacing); // 0..1
+      var y=hz + Math.pow(p,2)*(h-hz);
+      var a=Math.max(0,0.5-p*0.5);
+      x.strokeStyle='rgba(0,240,255,'+a+')';
+      x.beginPath();x.moveTo(0,y);x.lineTo(w,y);x.stroke();
+    }
+    // vertical converging lines
+    var cx=w/2;
+    for(var j=-14;j<=14;j++){
+      var fx=cx + j*(w/14);
+      x.strokeStyle='rgba(255,46,151,.18)';
+      x.beginPath();x.moveTo(cx + j*40, hz);x.lineTo(fx, h);x.stroke();
+    }
+    // sun
+    var grd=x.createLinearGradient(0,hz-150,0,hz);
+    grd.addColorStop(0,'rgba(255,211,25,.0)');
+    grd.addColorStop(1,'rgba(255,46,151,.25)');
+    x.fillStyle=grd;
+    x.beginPath();x.arc(cx,hz-30,110,0,Math.PI*2);x.fill();
+    t+=0.6;
+    requestAnimationFrame(draw);
+  }
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){draw();}
+  else{ // static frame
+    x.fillStyle='rgba(166,77,255,.08)';x.fillRect(0,h*0.55,w,h);
+  }
+})();
+</script>
 </body>
 </html>
